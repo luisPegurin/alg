@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+
 #include "structs.h"
 #define tamNome 50
 #define tamSigla 10
@@ -43,15 +45,17 @@ void novoGrafo (Grafo* g) {
 		}
 
 	}
+	calculaSiglas(g);
+	
 
 	printf("\n************************************************************************\nHierarquias:");
-
+	
 	for (int i=0; i < g->numHier;i++) {
 		Info * aux = g->hierarquias[i]->topo;
-		printf("\nDimensão %s",aux->nome);
+		printf("\nDimensão %s(%s)",aux->nome, aux->sigla);
 		aux = aux->proximo;
 		while (aux != NULL ) {
-			printf(" -> %s",aux->nome);
+			printf(" -> %s(%s)",aux->nome, aux->sigla);
 			aux = aux->proximo;
 		}
 	}
@@ -62,10 +66,25 @@ void novoGrafo (Grafo* g) {
 
 
 int main() {
+/*
+		const char src[50] = "asd";
+	   char dest[50];
+
+	   printf("Before memcpy dest = %s\n", dest);
+	   memcpy(dest, src, 20);
+	   printf("After memcpy dest = %s\n", dest);
+
+	*/
+
 
 	Grafo g;
 	createGrafo(&g);
 	novoGrafo(&g);
+
+
+
+
+
 
 	return 0;
 }
