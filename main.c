@@ -6,6 +6,21 @@
 #define tamSigla 10
 
 
+void imprimiHierarquias (Grafo *g) {
+	printf("\n************************************************************************\nHierarquias:");
+	
+	for (int i=0; i < g->numHier;i++) {
+		Info * aux = g->hierarquias[i]->topo;
+		printf("\nDimensão %s(%s)",aux->nome, aux->sigla);
+		aux = aux->proximo;
+		while (aux != NULL ) {
+			printf(" -> %s(%s)",aux->nome, aux->sigla);
+			aux = aux->proximo;
+		}
+	}
+	printf("\n");
+}
+
 
 void novoGrafo (Grafo* g) {
 
@@ -47,22 +62,146 @@ void novoGrafo (Grafo* g) {
 	}
 	calculaSiglas(g);
 	
-
-	printf("\n************************************************************************\nHierarquias:");
+	imprimiHierarquias(g);
 	
-	for (int i=0; i < g->numHier;i++) {
-		Info * aux = g->hierarquias[i]->topo;
-		printf("\nDimensão %s(%s)",aux->nome, aux->sigla);
-		aux = aux->proximo;
-		while (aux != NULL ) {
-			printf(" -> %s(%s)",aux->nome, aux->sigla);
-			aux = aux->proximo;
-		}
-	}
-	printf("\n");
 }
 
 
+void armazenaDados (Grafo *g) {
+
+	char url[10] = "dados";
+	int byteOffSet = 0;
+	char s[50] = "produto";
+	FILE * arq;
+	arq = fopen(url, "ab");
+	if (arq == NULL) {
+			printf("Erro ao abrir arquivo\n");
+	}
+	else {
+		fseek(arq,byteOffSet,SEEK_END);
+		for (int i =0; i< g->numHier; i++) {
+			Info *aux = g->hierarquias[i]->topo;
+			while (aux != NULL) {
+				fwrite (aux->nome, 1 ,strlen(aux->nome), arq);
+				fwrite ("/",1,1,arq);
+				fwrite (aux->sigla,1, strlen(aux->sigla), arq);
+				fwrite ("|",1,1,arq);
+				aux = aux->proximo;
+				
+			}
+			fwrite ("*",1,1,arq);
+		}
+		fwrite ("#",1,1,arq);
+
+/*
+		fseek(arq,byteOffSet,SEEK_SET);
+		int n = strlen(s) + sizeof(int);
+		fwrite(&n, sizeof(int),1, arq);
+		fwrite(s, 1, strlen(s), arq);
+//		byteOffSet = strlen(s) + sizeof(int);
+//		fseek(arq,byteOffSet,SEEK_SET);
+		fwrite(s, 1, strlen(s), arq);
+		byteOffSet += 30;
+*/
+	}
+	fclose(arq);
+
+}
+
+void leDados(Grafo *g, int rrn) {
+	char url[10] = "dados";
+	FILE * arq;
+	char nome[tamNome];
+	char c;
+	char sigla[tamSigla];
+	arq = fopen(url, "rb");
+	if (arq == NULL) {
+			printf("Erro ao abrir arquivo\n");
+	}
+	else {
+		int counter=0;
+		int byteOffset = 0;
+		int pos = 0;
+		fseek(arq, 0 ,SEEK_SET);
+		// se não for o primeiro registro, deve-se calcular a posição
+		if (counter != rrn) {
+			c = fgetc(arq);
+			while (c != EOF) {
+				if (c == '#') {
+					counter++;
+				}
+				if (counter == rrn) {
+					c = fgetc(arq);
+					break;
+				} else {
+					c = fgetc(arq);
+				}
+			}
+		}
+		// primeiro registro
+		else {
+			c = fgetc(arq);
+		}
+
+		// recupera registro para o grafo 
+		if (c != EOF) {
+			
+			int n=0;
+			Hierarquia * vetor[20];
+
+			while (c != '#') {
+				Hierarquia* h = (Hierarquia*) malloc(sizeof(Hierarquia));
+				if (h == NULL) {
+					exit(1);
+				}
+				createHierarquia(h);
+				vetor[n] = h;
+				n++;
+
+				while (c != '*') {
+					pos = 0;
+					while (c != '/' ) {
+						nome[pos] = c;
+						fread( &c, 1, 1,arq );
+						pos++;
+					}
+					nome[pos] = '\0';
+					Info * aux = addInfo(h,nome);
+
+					fread( &c, 1, 1,arq );
+					pos = 0;
+					while(c != '|') {
+						sigla[pos] = c;
+						fread( &c, 1, 1,arq );
+						pos++;
+					}
+					sigla[pos] = '\0';
+					strcpy(aux->sigla,sigla);
+					fread( &c, 1, 1,arq );
+				}
+
+				Info * aux2 = h->topo;
+				while (aux2 != NULL ) {
+					aux2 = aux2->proximo;
+				}
+				fread( &c, 1, 1,arq );
+			}
+
+			g->hierarquias = (Hierarquia**) malloc(sizeof (Hierarquia*) * n);
+			g->numHier = n;
+			if (g->hierarquias == NULL) {
+				exit(1);
+			}
+			for (int i =0; i<=n; i++) {
+				g->hierarquias[i] = vetor[i];
+			}
+		}
+	}
+	
+	fclose(arq);
+
+	//printf("%s",a);
+}
 
 
 int main() {
@@ -74,13 +213,42 @@ int main() {
 	   memcpy(dest, src, 20);
 	   printf("After memcpy dest = %s\n", dest);
 
-	*/
+
+*/
 
 
-	Grafo g;
-	createGrafo(&g);
-	novoGrafo(&g);
+	while (1) {	   
+		printf("\nPara vizualizar um grafo digite 1. Para inserir novo grafo digite 2: ");
+		int n;
+		scanf("%d",&n);
+		if (n == 1) {
+			printf ("\nDigite o número id do grafo: ");
+			scanf("%d",&n);
+			Grafo leitura;
+			createGrafo(&leitura);
+			leDados(&leitura, n);
+			if (leitura.numHier == 0) {
+				printf("\nNão existe esse grafo");
+			}
+			else {
+				imprimiHierarquias(&leitura);
+			}
+		}
+		else if (n==2) {
+			Grafo g;
+			createGrafo(&g);
 
+			novoGrafo(&g);
+
+			armazenaDados(&g);
+		}
+	}
+
+
+	
+
+
+	
 
 
 

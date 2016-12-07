@@ -32,6 +32,7 @@ typedef struct Grafo {
 
 void createGrafo(Grafo * g) {
 	g->hierarquias = NULL;
+	g->numHier =0;
 }
 
 void createHierarquia(Hierarquia* i) {
@@ -44,7 +45,7 @@ void createInfo(Info* i) {
 	strcpy(i->sigla,"");
 }
 
-void addInfo(Hierarquia * h, char * nome) {
+Info * addInfo(Hierarquia * h, char * nome) {
 	Info * i = (Info*) malloc(sizeof(Info));
 	if (i == NULL) {
 		exit(1);
@@ -61,6 +62,7 @@ void addInfo(Hierarquia * h, char * nome) {
 		}
 		aux->proximo = i;
 	}
+	return i;
 }
 
 
