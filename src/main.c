@@ -1,7 +1,10 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "structs.h"
+#include "menu.h"
+
 #define tamNome 50
 #define tamSigla 10
 
@@ -18,12 +21,11 @@ void imprimiHierarquias (Grafo *g) {
 			aux = aux->proximo;
 		}
 	}
-	printf("\n");
+	printf("\n************************************************************************\n\n\n");
 }
 
 
 void novoGrafo (Grafo* g) {
-
 	printf("\n**********************************************************************");
 	printf("\n(IMPORTANTE)A ordem em que forem inseridas as informações é a ordem da hierarquia\n");
 	printf("Digite quantas dimensões terá o grafo: ");
@@ -203,7 +205,6 @@ void leDados(Grafo *g, int rrn) {
 	//printf("%s",a);
 }
 
-
 int main() {
 /*
 		const char src[50] = "asd";
@@ -215,47 +216,6 @@ int main() {
 
 
 */
-
-
-	while (1) {	   
-		printf("\nPara vizualizar um grafo digite 1. Para inserir novo grafo digite 2: ");
-		int n;
-		scanf("%d",&n);
-		if (n == 1) {
-			printf ("\nDigite o número id do grafo: ");
-			scanf("%d",&n);
-			Grafo leitura;
-			createGrafo(&leitura);
-			leDados(&leitura, n);
-			if (leitura.numHier == 0) {
-				printf("\nNão existe esse grafo");
-			}
-			else {
-				imprimiHierarquias(&leitura);
-			}
-		}
-		else if (n==2) {
-			Grafo g;
-			createGrafo(&g);
-
-			novoGrafo(&g);
-
-			armazenaDados(&g);
-		}
-	}
-
-
-	
-
-
-	
-
-
-
-
-
+	menu_principal();
 	return 0;
 }
-
-
-
