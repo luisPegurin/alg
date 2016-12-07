@@ -1,5 +1,5 @@
 all:
-	gcc -o p structs.c structs.h main.c
+	gcc -std=c11 -Wall -o p structs.c structs.h main.c
 
 run:
 	./p
