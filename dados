@@ -1,1 +1,1 @@
-produto/p|marca/m|produto/produto|*filial/|estado/|cidade/|filial/|*#
+produto/p|produto/produto|marca/m|*filial/|filial/|cidade/|estado/|regiao/|pais/|*data/|dia/|mes/|trimestre/|semestre/|ano/|*promocao/|promocao/|tipoPromocao/|*#

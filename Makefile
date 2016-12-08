@@ -23,7 +23,7 @@ main:
 	$(CP) -c $(SRC)/main.c $(FLAGS) -I$(INCLUDE) -o $(OBJ)/main.o
 
 clean:
-	rm main $(OBJ)/*.o
+	rm main $(OBJ)/*.o *.dot *.png
 
 run:
 	./main

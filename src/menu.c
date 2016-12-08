@@ -7,7 +7,8 @@
 #include "menu.h"
 
 /**
- * @brief Método para mostrar o menu principal
+ * @details O método mostra uma as opções do menu principal que o usuário pode escolher.
+ *          Ao escolher uma opção, um método específico para cada opção é invocado. 
  */
 void menu_principal() {
   int menu_opcao;
@@ -38,7 +39,8 @@ void menu_principal() {
 }
 
 /**
- * @brief Método para voltar a menu principal ao
+ * @details O método espera o usuário a apertar [ENTER].
+ *          Ao apertar [ENTER] o método menu_principal é invocado.
  */
 void menu_continuar() {
   printf("Aperte [ENTER] para continuar\n");
@@ -48,7 +50,23 @@ void menu_continuar() {
 }
 
 /**
- * @brief Método para tratar visualização de grafo
+ * @details O método inicializa um grafo. 
+ *          Coleta as informações e salva no arquivo de registros.
+ */
+void menu_novo_grafo() {
+  Grafo g;
+  createGrafo(&g);
+
+  novoGrafo(&g);
+
+  armazenaDados(&g);
+
+  menu_continuar();
+}
+
+/**
+ * @details O método busca uma hierarquia a partir de um id.
+ *          Se o grafo existe imprime o registro.
  */
 void menu_visualizar_grafo() {
   int id_grafo;
@@ -70,21 +88,7 @@ void menu_visualizar_grafo() {
 }
 
 /**
- * @brief Método para adicionar um grafo
- */
-void menu_novo_grafo() {
-  Grafo g;
-  createGrafo(&g);
-
-  novoGrafo(&g);
-
-  armazenaDados(&g);
-
-  menu_continuar();
-}
-
-/**
- * @brief Método para visualizar graficamente o grafo
+ * @details Método para visualizar graficamente o grafo
  */
 void menu_visualizacao_grafica() {
   Grafo grafo;
@@ -113,18 +117,10 @@ void menu_visualizacao_grafica() {
       for (int i = 0; i < grafo.numHier; i++) {
         Info *aux = grafo.hierarquias[i]->topo;
 
-        // Escreve a maior granularidade
-        if (aux->proximo != NULL)
-        {
-          fwrite ("all", 1, strlen("all"), dot_file);
-          fwrite ("->", 1, 2, dot_file);
-          fwrite (aux->proximo->nome, 1, strlen(aux->proximo->nome), dot_file);
-          fwrite (";", 1, 1, dot_file);
-        }
-
+        // Começa a partir do próximo, pois o topo é a dimensão
         aux = aux->proximo;
 
-        // Escreve as próximas granularidades
+        // Escreve as agregações
         while (aux->proximo != NULL) {
           fwrite (aux->nome, 1, strlen(aux->nome), dot_file);
           fwrite ("->", 1, 2, dot_file);
@@ -133,6 +129,14 @@ void menu_visualizacao_grafica() {
           aux = aux->proximo;
         }
 
+        // Escreve a maior agregação
+        if (aux->proximo == NULL)
+        {
+          fwrite (aux->nome, 1, strlen(aux->nome), dot_file);
+          fwrite ("->", 1, 2, dot_file);
+          fwrite ("all", 1, strlen("all"), dot_file);
+          fwrite (";", 1, 1, dot_file);
+        }
       }
 
       // Fecha o digrafo
@@ -150,7 +154,8 @@ void menu_visualizacao_grafica() {
 }
 
 /**
- * @brief Método para sair do programa
+ * @details O método avisa ao usuário que o programa será encerrado.
+ *          Depois de 2 segundos o programa é fechado.
  */
 void menu_sair() {
   int i;
