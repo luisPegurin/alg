@@ -91,6 +91,10 @@ void menu_visualizar_grafo() {
  * @details Método para visualizar graficamente o grafo
  */
 void menu_visualizacao_grafica() {
+  printf("\nDigite o número id do grafo: ");
+  int n;
+  scanf("%d",&n);
+  /*
   Grafo grafo;
   FILE *dot_file;
   char *string_aux;
@@ -148,7 +152,12 @@ void menu_visualizacao_grafica() {
       system("dot -Tpng graph.dot > graph.png");
     }
 
-  }
+  }*/
+  Grafo grafo;
+  createGrafo(&grafo);
+  leDados(&grafo, n);
+  generateGraph(&grafo);
+  geraDot(&grafo);
 
   menu_continuar();
 }
