@@ -1,3 +1,12 @@
+/**
+ * main.c -- Arquivo main
+ *
+ * Autores:
+ *  Luís Henrique Pegurin 9313325
+ *  Mateus Medeiros       9266410
+ *  Guilherme Kayo Shida  6878696
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,13 +14,9 @@
 #include "structs.h"
 #include "menu.h"
 
-#define tamNome 50
-#define tamSigla 10
-
-
 void imprimiHierarquias (Grafo *g) {
 	printf("\n************************************************************************\nHierarquias:");
-	
+
 	for (int i=0; i < g->numHier;i++) {
 		Info * aux = g->hierarquias[i]->topo;
 		printf("\nDimensão %s(%s)",aux->nome, aux->sigla);
@@ -31,7 +36,7 @@ void novoGrafo (Grafo* g) {
 	printf("Digite quantas dimensões terá o grafo: ");
 	int n;
 	scanf("%d",&n);
-	
+
 	g->hierarquias = (Hierarquia**) malloc(sizeof(Hierarquia*) * n);
 	g->numHier = n;
 
@@ -44,7 +49,7 @@ void novoGrafo (Grafo* g) {
 		createHierarquia(h);
 		g->hierarquias[i] = h;
 
-		char nome[tamNome];
+		char nome[TAMANHO_MAX_NOME];
 		printf("\n**********************************************************************");
 		printf("\nDigite o nome da dimensão %d :", i+1);
 		scanf("%s",nome);
@@ -56,24 +61,22 @@ void novoGrafo (Grafo* g) {
 		int j;
 		for(j=0; j<m;j++) {
 			printf("\nDigite o nome do atributo: ");
-			char nomeA[tamNome];
+			char nomeA[TAMANHO_MAX_NOME];
 			scanf("%s",nomeA);
 			addInfo(h,nomeA);
 		}
 
 	}
 	calculaSiglas(g);
-	
+
 	imprimiHierarquias(g);
-	
+
 }
 
 
 void armazenaDados (Grafo *g) {
-
 	char url[10] = "dados";
 	int byteOffSet = 0;
-	char s[50] = "produto";
 	FILE * arq;
 	arq = fopen(url, "ab");
 	if (arq == NULL) {
@@ -89,40 +92,27 @@ void armazenaDados (Grafo *g) {
 				fwrite (aux->sigla,1, strlen(aux->sigla), arq);
 				fwrite ("|",1,1,arq);
 				aux = aux->proximo;
-				
+
 			}
 			fwrite ("*",1,1,arq);
 		}
 		fwrite ("#",1,1,arq);
-
-/*
-		fseek(arq,byteOffSet,SEEK_SET);
-		int n = strlen(s) + sizeof(int);
-		fwrite(&n, sizeof(int),1, arq);
-		fwrite(s, 1, strlen(s), arq);
-//		byteOffSet = strlen(s) + sizeof(int);
-//		fseek(arq,byteOffSet,SEEK_SET);
-		fwrite(s, 1, strlen(s), arq);
-		byteOffSet += 30;
-*/
 	}
 	fclose(arq);
-
 }
 
 void leDados(Grafo *g, int rrn) {
 	char url[10] = "dados";
 	FILE * arq;
-	char nome[tamNome];
+	char nome[TAMANHO_MAX_NOME];
 	char c;
-	char sigla[tamSigla];
+	char sigla[TAMANHO_MAX_SIGLA];
 	arq = fopen(url, "rb");
 	if (arq == NULL) {
 			printf("Erro ao abrir arquivo\n");
 	}
 	else {
 		int counter=0;
-		int byteOffset = 0;
 		int pos = 0;
 		fseek(arq, 0 ,SEEK_SET);
 		// se não for o primeiro registro, deve-se calcular a posição
@@ -145,9 +135,9 @@ void leDados(Grafo *g, int rrn) {
 			c = fgetc(arq);
 		}
 
-		// recupera registro para o grafo 
+		// recupera registro para o grafo
 		if (c != EOF) {
-			
+
 			int n=0;
 			Hierarquia * vetor[20];
 
@@ -199,10 +189,8 @@ void leDados(Grafo *g, int rrn) {
 			}
 		}
 	}
-	
-	fclose(arq);
 
-	//printf("%s",a);
+	fclose(arq);
 }
 
 int main() {

@@ -1,17 +1,33 @@
+/**
+ * structs.h -- Definição das estruturas e métodos utilizados no programa.
+ *
+ * Autores:
+ *  Luís Henrique Pegurin 9313325
+ *  Mateus Medeiros       9266410
+ *  Guilherme Kayo Shida  6878696
+ */
+
 #ifndef STRUCTS_H_
 #define STRUCTS_H_
 
-#define tamNome 50
-#define tamSigla 10
+/**
+ * TAMANHO_MAX_NOME é o tamanho máximo para o valor do nome na estrutura Info
+ */
+#define TAMANHO_MAX_NOME 50
+
+/**
+ * TAMANHO_MAX_SIGLA é o tamanho máximo para o valor da sigla na estrutura Info
+ */
+#define TAMANHO_MAX_SIGLA 10
 
 
 // representa dimensao ou atributo (hierarquia)
 typedef struct Info Info;
 
 typedef struct Info {
-	char nome[tamNome];
-	char sigla[tamSigla];
-	Info * proximo;
+	char nome[TAMANHO_MAX_NOME];
+	char sigla[TAMANHO_MAX_SIGLA];
+	Info *proximo;
 } Info;
 
 
@@ -20,55 +36,68 @@ typedef struct No No;
 typedef struct Vertice Vertice;
 
 struct No {
-	No* proximo;
-	Vertice * vertice;
+	No *proximo;
+	Vertice *vertice;
 };
 
 struct Vertice {
-	Info ** infos;
-	No * filhos;
-	No * ancestrais;
-	char* sigla;
+	Info **infos;
+	No *filhos;
+	No *ancestrais;
+	char *sigla;
 };
 
 typedef struct Hierarquia {
-	Info * topo;
+	Info *topo;
 } Hierarquia;
 
-
-
 typedef struct Grafo {
-	Hierarquia ** hierarquias;
+	Hierarquia **hierarquias;
 	int numHier;
-	Vertice* verticeTopo;
+	Vertice *verticeTopo;
 } Grafo;
 
+/**
+ * @brief Método para criar vértice
+ */
+void createVertice(Vertice *);
 
-void createVertice(Vertice * v);
-
+/**
+ * @brief Método para criar grafo
+ */
 void createGrafo(Grafo *);
 
 void createHierarquia(Hierarquia *);
 
 void createInfo(Info *);
 
-Info * addInfo(Hierarquia *, char *);
+Info *addInfo(Hierarquia *, char *);
 
 void calculaSiglas(Grafo *);
 
-Vertice * pesquisaVertice( Vertice* v, char* sigla);
+Vertice *pesquisaVertice(Vertice *, char *);
 
-void generateGraph(Grafo *g);
+void generateGraph(Grafo *);
 
-void generateFilhos (Vertice * v, Grafo *g) ;
+void generateFilhos(Vertice *, Grafo *) ;
 
+void createAresta(Vertice *, Vertice *);
 
+/**
+ * @brief Gera um arquivo '.dot'
+ *
+ * @param grafo O grafo que será percorrido para gerar o arquivo '.dot'
+ * @return Void
+ */
+void generate_dot_file(Grafo *grafo);
 
-void criaAresta (Vertice * inicio, Vertice* fim);
+/**
+ * @brief Gera um arquivo '.png' a partir de um arquivo '.dot'
+ *
+ * @return Void
+ */
+void generate_png_from_dot_file();
 
-void geraDot(Grafo * g) ;
-
-
-void percorreGrafo (Vertice *v, FILE* dot_file) ;
+void percorreGrafo(Vertice *, FILE *) ;
 
 #endif

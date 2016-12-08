@@ -1,14 +1,21 @@
+/**
+ * menu.c -- Implementação do menu
+ *
+ * Autores:
+ *  Luís Henrique Pegurin 9313325
+ *  Mateus Medeiros       9266410
+ *  Guilherme Kayo Shida  6878696
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
-#include <errno.h>
 #include "structs.h"
 #include "menu.h"
 
 /**
- * @details O método mostra uma as opções do menu principal que o usuário pode escolher.
- *          Ao escolher uma opção, um método específico para cada opção é invocado. 
+ * O método mostra uma as opções do menu principal que o usuário pode escolher.
+ * Ao escolher uma opção, um método específico para cada opção é invocado.
  */
 void menu_principal() {
   int menu_opcao;
@@ -23,50 +30,48 @@ void menu_principal() {
   while (1) {
     fflush(stdin);
     scanf("%d", &menu_opcao);
-    if (menu_opcao == 1) {
-      menu_visualizar_grafo();
-    }
-    else if (menu_opcao == 2) {
-      menu_novo_grafo();
-    }
-    else if (menu_opcao == 3) {
-      menu_visualizacao_grafica();
-    }
-    else if (menu_opcao == 4) {
-      menu_sair();
+    switch (menu_opcao) {
+      case 1:
+        menu_visualizar_grafo();
+      case 2:
+        menu_novo_grafo();
+      case 3:
+        menu_visualizacao_grafica();
+      case 4:
+        menu_sair();
     }
   }
 }
 
 /**
- * @details O método espera o usuário a apertar [ENTER].
- *          Ao apertar [ENTER] o método menu_principal é invocado.
+ * O método espera o usuário a apertar [ENTER]. Ao apertar [ENTER] o método
+ * menu_principal é invocado.
  */
 void menu_continuar() {
   printf("Aperte [ENTER] para continuar\n");
   while( getchar() != '\n' );
   getchar();
+
   menu_principal();
 }
 
 /**
- * @details O método inicializa um grafo. 
- *          Coleta as informações e salva no arquivo de registros.
+ * O método inicializa um grafo. Coleta as informações e salva no arquivo de
+ * registros.
  */
 void menu_novo_grafo() {
   Grafo g;
+
   createGrafo(&g);
-
   novoGrafo(&g);
-
   armazenaDados(&g);
 
   menu_continuar();
 }
 
 /**
- * @details O método busca uma hierarquia a partir de um id.
- *          Se o grafo existe imprime o registro.
+ * O método busca uma hierarquia a partir de um id. Se o grafo existe imprime o
+ * registro.
  */
 void menu_visualizar_grafo() {
   int id_grafo;
@@ -74,7 +79,7 @@ void menu_visualizar_grafo() {
 
   printf ("\nDigite o número id do grafo: ");
   scanf("%d", &id_grafo);
-  
+
   createGrafo(&leitura);
   leDados(&leitura, id_grafo);
   if (leitura.numHier == 0) {
@@ -88,86 +93,31 @@ void menu_visualizar_grafo() {
 }
 
 /**
- * @details Método para visualizar graficamente o grafo
+ * O método busca a hierarquia a partir de um id. Com as informações do grafo,
+ * gera-se o arquivo do tipo '.dot'.
  */
 void menu_visualizacao_grafica() {
-  printf("\nDigite o número id do grafo: ");
-  int n;
-  scanf("%d",&n);
-  /*
   Grafo grafo;
-  FILE *dot_file;
-  char *string_aux;
+  int id_grafo;
+
+  printf("\nDigite o id do grafo: ");
+  scanf("%d", &id_grafo);
 
   createGrafo(&grafo);
-  leDados(&grafo, 0);
-
-  if (grafo.numHier == 0) {
-    printf("\nNão existe esse grafo");
-  }
-  else {
-    dot_file = fopen("graph.dot", "wb");
-
-    if (!dot_file) {
-      printf("Erro na abertura do dot_file\n");
-      perror("> Resultado da abertura");
-      printf("> Erro: %d\n", errno);
-    }
-    else {
-
-      // Começa a escrever o digrafo
-      fwrite("digraph G {", 1, strlen("digraph G {"), dot_file);
-      
-      for (int i = 0; i < grafo.numHier; i++) {
-        Info *aux = grafo.hierarquias[i]->topo;
-
-        // Começa a partir do próximo, pois o topo é a dimensão
-        aux = aux->proximo;
-
-        // Escreve as agregações
-        while (aux->proximo != NULL) {
-          fwrite (aux->nome, 1, strlen(aux->nome), dot_file);
-          fwrite ("->", 1, 2, dot_file);
-          fwrite (aux->proximo->nome, 1, strlen(aux->proximo->nome), dot_file);
-          fwrite (";", 1, 1, dot_file);
-          aux = aux->proximo;
-        }
-
-        // Escreve a maior agregação
-        if (aux->proximo == NULL)
-        {
-          fwrite (aux->nome, 1, strlen(aux->nome), dot_file);
-          fwrite ("->", 1, 2, dot_file);
-          fwrite ("all", 1, strlen("all"), dot_file);
-          fwrite (";", 1, 1, dot_file);
-        }
-      }
-
-      // Fecha o digrafo
-      fwrite("}", 1, 1, dot_file);
-
-      fclose(dot_file);
-
-      // Gera o arquivo '.png' a partir do arquivo '.dot'
-      system("dot -Tpng graph.dot > graph.png");
-    }
-
-  }*/
-  Grafo grafo;
-  createGrafo(&grafo);
-  leDados(&grafo, n);
+  leDados(&grafo, id_grafo);
   generateGraph(&grafo);
-  geraDot(&grafo);
+  generate_dot_file(&grafo);
 
   menu_continuar();
 }
 
 /**
- * @details O método avisa ao usuário que o programa será encerrado.
- *          Depois de 2 segundos o programa é fechado.
+ * O método avisa ao usuário que o programa será encerrado. Depois de 2
+ * segundos o programa é fechado.
  */
 void menu_sair() {
   int i;
+
   printf("\nSaindo do programa");
   for(i = 0;i < 2;i++) {
     printf(".");
@@ -175,5 +125,6 @@ void menu_sair() {
     sleep(1);
   }
   printf("\n");
+
   exit(1);
 }
