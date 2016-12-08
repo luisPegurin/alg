@@ -156,7 +156,12 @@ Info *add_info(Hierarquia *hierarquia, char *nome) {
 
 
 /**
- * [calcula_siglas description]
+ * Define quais são as siglas de cada informação dentro das hierarquias do 
+ * grafo passado por parâmetro de acordo com o nome de cada uma. As siglas 
+ * são únicas dentro do grafo. Por padrão a sigla é a primeira letra do nome,
+ * mas se existirem nome com a mesma primeira letra, considera-se também a segunda letra
+ * e assim sucetivamente.
+ * 
  */
 void calcula_siglas(Grafo *grafo) {
   int n = grafo->numHier;
@@ -376,7 +381,10 @@ void generate_graph_for_graphic(Grafo *grafo) {
 
 
 /**
- * [generate_filhos  description]
+ *
+ * Função auxiliar para a função 'generate_graph_for_graphic', ela continua gerando
+ * o grafo de derivação recursivamente para cada filho de vertice.
+ *
  */
 void generate_filhos(Vertice *vertice, Grafo *grafo) {
   for (int i =0 ; i < grafo->numHier;i++) {
@@ -429,7 +437,11 @@ void generate_filhos(Vertice *vertice, Grafo *grafo) {
 
 
 /**
- * [pesquisa_vertice description]
+ * Pesquisa um vertice descendente do parametro 'vertice' de acordo com o
+ * parametro 'sigla'. Esta função é auxiliar para a função generate_filhos
+ * que a usa para não gerar um novo vertice com a sigla igual a de um vertice
+ * já existente.
+ * 
  */
 Vertice *pesquisa_vertice(Vertice *vertice, char *sigla) {
   No *aux = vertice->filhos;
