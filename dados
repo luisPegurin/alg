@@ -1,1 +1,1 @@
-produto/p|marca/m|produto/produto|*filial/|estado/|cidade/|filial/|*#
+produto/p|marca/m|*filial/f|cidade/c|estado/e|*#produto/p|marca/m|*#produto/p|*filial/f|*tempo/t|*#
