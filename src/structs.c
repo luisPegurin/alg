@@ -160,16 +160,16 @@ Info *add_info(Hierarquia *hierarquia, char *nome) {
  */
 void calcula_siglas(Grafo *grafo) {
   int n = grafo->numHier;
-
-  for (int i = 0; i < n; i++) {
+  int i;
+  for (i = 0; i < n; i++) {
     Info *aux = grafo->hierarquias[i]->topo;
     int Iaux = 0;
 
     while (aux != NULL) {
 
       int pos = 0;
-
-      for (int j = 0; j < n; j++) {
+      int j;
+      for (j = 0; j < n; j++) {
         Info *aux2 = grafo->hierarquias[j]->topo;
         int Iaux2 = 0;
         while (aux2 != NULL) {
@@ -224,7 +224,8 @@ void save_data_to_file(Grafo *g) {
   }
   else {
     fseek(arq, byteOffSet, SEEK_END);
-    for (int i = 0; i < g->numHier; i++) {
+    int i;
+    for (i = 0; i < g->numHier; i++) {
       Info *aux = g->hierarquias[i]->topo;
 
       while (aux != NULL) {
@@ -332,7 +333,8 @@ void get_data_from_file(Grafo *g, int rrn) {
       if (g->hierarquias == NULL) {
         exit(1);
       }
-      for (int i =0; i<=n; i++) {
+      int i;
+      for (i =0; i<=n; i++) {
         g->hierarquias[i] = vetor[i];
       }
     }
@@ -366,7 +368,8 @@ void generate_graph_for_graphic(Grafo *grafo) {
   }
 
   strcpy(topo->sigla, "");
-  for (int i = 0; i < grafo->numHier; i++) {
+  int i;
+  for (i = 0; i < grafo->numHier; i++) {
     topo->infos[i] = grafo->hierarquias[i]->topo;
     strcat(topo->sigla, grafo->hierarquias[i]->topo->sigla);
   }
@@ -379,7 +382,8 @@ void generate_graph_for_graphic(Grafo *grafo) {
  * [generate_filhos  description]
  */
 void generate_filhos(Vertice *vertice, Grafo *grafo) {
-  for (int i =0 ; i < grafo->numHier;i++) {
+  int i;
+  for (i =0 ; i < grafo->numHier;i++) {
     // se não percorreu toda a hierarquia
     if (vertice->infos[i] != NULL) {
       Vertice* novoVertice = (Vertice*) malloc(sizeof(Vertice));
@@ -394,8 +398,9 @@ void generate_filhos(Vertice *vertice, Grafo *grafo) {
       }
 
       strcpy(novoVertice->sigla, "");
+      int j;
       // copia as 'infos' (dimensao ou atributos) do vertice pai para o novo vertice filho
-      for (int j=0; j< grafo->numHier; j++) {
+      for (j=0; j< grafo->numHier; j++) {
         // a hierarquia i deve ser posta para a proxima posição
         if (j==i) {
           novoVertice->infos[j] = vertice->infos[i]->proximo;
@@ -529,10 +534,11 @@ void generate_png_from_dot_file() {
  */
 void print_hierarquias(Grafo *grafo) {
   Info *aux;
+  int i;
 
   printf("\n************************************************************************\nHierarquias:");
 
-  for (int i = 0; i < grafo->numHier; i++) {
+  for (i = 0; i < grafo->numHier; i++) {
     aux = grafo->hierarquias[i]->topo;
     printf("\nDimensão %s(%s)",aux->nome, aux->sigla);
     aux = aux->proximo;
