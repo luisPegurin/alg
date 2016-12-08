@@ -62,9 +62,9 @@ void menu_continuar() {
 void menu_novo_grafo() {
   Grafo g;
 
-  createGrafo(&g);
-  novoGrafo(&g);
-  armazenaDados(&g);
+  create_grafo(&g);
+  novo_grafo(&g);
+  armazena_dados(&g);
 
   menu_continuar();
 }
@@ -80,13 +80,13 @@ void menu_visualizar_grafo() {
   printf ("\nDigite o número id do grafo: ");
   scanf("%d", &id_grafo);
 
-  createGrafo(&leitura);
+  create_grafo(&leitura);
   leDados(&leitura, id_grafo);
   if (leitura.numHier == 0) {
     printf("\nNão existe esse grafo");
   }
   else {
-    imprimiHierarquias(&leitura);
+    imprimir_hierarquias(&leitura);
   }
 
   menu_continuar();
@@ -103,7 +103,7 @@ void menu_visualizacao_grafica() {
   printf("\nDigite o id do grafo: ");
   scanf("%d", &id_grafo);
 
-  createGrafo(&grafo);
+  create_grafo(&grafo);
   leDados(&grafo, id_grafo);
   generateGraph(&grafo);
   generate_dot_file(&grafo);

@@ -1,1 +1,1 @@
-produto/p|marca/m|*filial/f|cidade/c|estado/e|*#produto/p|marca/m|*#produto/p|*filial/f|*tempo/t|*#
+dadosDemograficos/d|faixaEtaria/f|*localExamePreNatal/l|hospital/h|cidade/c|estado/e|regiao/r|pais/p|*#projeto/p|projeot/projeo|areaPesquisa/a|*coordenador/c|coordenador/coordenador|areaPesquisa/a|*dataInicio/|dia/|mes/|trimestre/|semestre/|ano/|*#
