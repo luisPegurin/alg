@@ -21,12 +21,14 @@ void create_grafo(Grafo *grafo) {
   grafo->numHier = 0;
 }
 
+
 /**
  * Inicialização de uma estrutura Hierarquia
  */
 void create_hierarquia(Hierarquia* hierarquia) {
   hierarquia->topo = NULL;
 }
+
 
 /**
  * Inicialização de uma estrutura Info
@@ -37,6 +39,7 @@ void create_info(Info* info) {
   strcpy(info->sigla, "");
 }
 
+
 /**
  * Inicialização de uma estrutura Vertice
  */
@@ -45,6 +48,7 @@ void create_vertice(Vertice *vertice) {
   vertice->filhos = NULL;
   vertice->ancestrais = NULL;
 }
+
 
 /**
  * Cria-se uma aresta entre dois vértices passados como parâmetros. Um vértice
@@ -68,6 +72,7 @@ void create_aresta(Vertice *inicio, Vertice *fim) {
   fim->ancestrais = ancestral;
 }
 
+
 /**
  * Cria-se um novo grafo de derivação pedindo ao usuário o número de dimensões,
  * seu nome, a quantidade de atributos e seus respectivos nome.
@@ -76,7 +81,7 @@ void create_aresta(Vertice *inicio, Vertice *fim) {
  * Ao terminar de inserir as informações, calcula-se as siglas de cada dimensão
  * /atributo e imprime a hierarquia na tela.
  */
-void novo_grafo(Grafo* g) {
+void new_grafo(Grafo* g) {
   printf("\n**********************************************************************");
   printf("\n(IMPORTANTE) A ordem em que forem inseridas as informações é a ordem da hierarquia\n");
   printf("Digite quantas dimensões terá o grafo: ");
@@ -116,8 +121,9 @@ void novo_grafo(Grafo* g) {
   }
   calcula_siglas(g);
 
-  imprimir_hierarquias(g);
+  print_hierarquias(g);
 }
+
 
 /**
  * Inicializa um novo Info e atribui o nome recebido como parâmetro. Se a
@@ -148,9 +154,9 @@ Info *add_info(Hierarquia *hierarquia, char *nome) {
   return info;
 }
 
+
 /**
  * [calcula_siglas description]
- * @param grafo [description]
  */
 void calcula_siglas(Grafo *grafo) {
   int n = grafo->numHier;
@@ -163,12 +169,12 @@ void calcula_siglas(Grafo *grafo) {
 
       int pos = 0;
 
-      for (int j=0; j<n;j++) {
+      for (int j = 0; j < n; j++) {
         Info *aux2 = grafo->hierarquias[j]->topo;
         int Iaux2 = 0;
         while (aux2 != NULL) {
           if ( (i == j && Iaux2 != Iaux) || i != j ) {
-            if ( strcmp(aux2->sigla,"") != 0 ) {
+            if ( strcmp(aux2->sigla, "") != 0 ) {
               char s1[TAMANHO_MAX_NOME];
               char s2[TAMANHO_MAX_NOME];
               strcpy(s1,aux->nome);
@@ -198,6 +204,7 @@ void calcula_siglas(Grafo *grafo) {
   }
 }
 
+
 /**
  * Salva os dados do grafo no arquivo de dados. Por padrão o nome do arquivo é
  * 'dados'. Significado dos caracteres especiais:
@@ -206,7 +213,7 @@ void calcula_siglas(Grafo *grafo) {
  *   '*' -- representa o término de uma hierarquia;
  *   '#' -- representa o término de um registro;
  */
-void armazena_dados(Grafo *g) {
+void save_data_to_file(Grafo *g) {
   char url[10] = "dados";
   int byteOffSet = 0;
   FILE * arq;
@@ -235,12 +242,13 @@ void armazena_dados(Grafo *g) {
   fclose(arq);
 }
 
+
 /**
  * Lê as informações do arquivo de dados, a partir de um RRN de um registro.
  * Recupera as informações do registro e atribui ao parâmetro de entrada do tipo
  * Grafo.
  */
-void leDados(Grafo *g, int rrn) {
+void get_data_from_file(Grafo *g, int rrn) {
   char url[10] = "dados";
   FILE * arq;
   char nome[TAMANHO_MAX_NOME];
@@ -333,39 +341,12 @@ void leDados(Grafo *g, int rrn) {
   fclose(arq);
 }
 
-/**
- * [pesquisaVertice description]
- * @param  vertice [description]
- * @param  sigla   [description]
- * @return         [description]
- */
-Vertice *pesquisaVertice(Vertice *vertice, char *sigla) {
-  No *aux = vertice->filhos;
-  Vertice *aux2;
-
-  if (strcmp(vertice->sigla, sigla) == 0) {
-    return vertice;
-  }
-
-  while (aux != NULL) {
-    if ( strcmp(aux->vertice->sigla, sigla) == 0 ) {
-      return aux->vertice;
-    }
-    aux2 = pesquisaVertice(aux->vertice,sigla);
-    if ( aux2 != NULL ){
-      return aux2;
-    }
-    aux = aux->proximo;
-  }
-
-  return NULL;
-}
 
 /**
- * [generateGraph description]
- * @param grafo [description]
+ * A partir de um grafo de hierarquias, gera-se um grafo de derivação para
+ * ser mostrado graficamente.
  */
-void generateGraph(Grafo *grafo) {
+void generate_graph_for_graphic(Grafo *grafo) {
   Vertice *topo = (Vertice*) malloc(sizeof(Vertice));
 
   if (topo == NULL) {
@@ -390,15 +371,14 @@ void generateGraph(Grafo *grafo) {
     strcat(topo->sigla, grafo->hierarquias[i]->topo->sigla);
   }
 
-  generateFilhos(topo, grafo);
+  generate_filhos(topo, grafo);
 }
 
+
 /**
- * [generateFilhos  description]
- * @param vertice [description]
- * @param grafo   [description]
+ * [generate_filhos  description]
  */
-void generateFilhos (Vertice *vertice, Grafo *grafo) {
+void generate_filhos(Vertice *vertice, Grafo *grafo) {
   for (int i =0 ; i < grafo->numHier;i++) {
     // se não percorreu toda a hierarquia
     if (vertice->infos[i] != NULL) {
@@ -433,11 +413,11 @@ void generateFilhos (Vertice *vertice, Grafo *grafo) {
         strcpy(novoVertice->sigla,"all");
       }
 
-      Vertice *aux = pesquisaVertice(grafo->verticeTopo, novoVertice->sigla);
+      Vertice *aux = pesquisa_vertice(grafo->verticeTopo, novoVertice->sigla);
       if (aux == NULL) {
         create_aresta(vertice, novoVertice);
         if (strcmp(novoVertice->sigla,"all") != 0)
-          generateFilhos(novoVertice, grafo);
+          generate_filhos(novoVertice, grafo);
       }
       else {
         create_aresta(vertice, aux);
@@ -446,6 +426,33 @@ void generateFilhos (Vertice *vertice, Grafo *grafo) {
     }
   }
 }
+
+
+/**
+ * [pesquisa_vertice description]
+ */
+Vertice *pesquisa_vertice(Vertice *vertice, char *sigla) {
+  No *aux = vertice->filhos;
+  Vertice *aux2;
+
+  if (strcmp(vertice->sigla, sigla) == 0) {
+    return vertice;
+  }
+
+  while (aux != NULL) {
+    if ( strcmp(aux->vertice->sigla, sigla) == 0 ) {
+      return aux->vertice;
+    }
+    aux2 = pesquisa_vertice(aux->vertice,sigla);
+    if ( aux2 != NULL ){
+      return aux2;
+    }
+    aux = aux->proximo;
+  }
+
+  return NULL;
+}
+
 
 /**
  * Cria-se um arquivo '.dot' com informações do grafo de derivação recebido
@@ -484,6 +491,7 @@ void generate_dot_file(Grafo *grafo) {
   }
 }
 
+
 /**
  * O método percorre todos os filhos de um vértice e escreve no arquivo '.dot'
  * as dependências que estão no grafo.
@@ -503,6 +511,7 @@ void write_all_dependencies(Vertice *vertice, FILE* dot_file) {
   }
 }
 
+
 /**
  * Invoca o método system() para utilizar o programa 'dot' e gerar um arquivo
  * '.png' a partir de um arquivo '.dot'. Assumi-se que o arquivo '.dot' existe
@@ -513,11 +522,12 @@ void generate_png_from_dot_file() {
   system("dot -Tpng graph.dot > graph.png");
 }
 
+
 /**
  * Percorre todas as dimensões e atributos de um determinado grafo. Imprime
  * textualmente na tela.
  */
-void imprimir_hierarquias(Grafo *grafo) {
+void print_hierarquias(Grafo *grafo) {
   Info *aux;
 
   printf("\n************************************************************************\nHierarquias:");

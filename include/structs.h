@@ -56,6 +56,7 @@ typedef struct Grafo {
 	Vertice *verticeTopo;
 } Grafo;
 
+
 /**
  * @brief Método que cria grafo
  *
@@ -63,6 +64,7 @@ typedef struct Grafo {
  * @return Void
  */
 void create_grafo(Grafo *grafo);
+
 
 /**
  * @brief Método que cria uma hierarquia
@@ -72,6 +74,7 @@ void create_grafo(Grafo *grafo);
  */
 void create_hierarquia(Hierarquia *hierarquia);
 
+
 /**
  * @brief Método que cria uma Info
  *
@@ -80,6 +83,7 @@ void create_hierarquia(Hierarquia *hierarquia);
  */
 void create_info(Info *info);
 
+
 /**
  * @brief Método que cria vértice
  *
@@ -87,6 +91,7 @@ void create_info(Info *info);
  * @return Void
  */
 void create_vertice(Vertice *vertice);
+
 
 /**
  * @brief Método para criar uma aresta
@@ -97,13 +102,15 @@ void create_vertice(Vertice *vertice);
  */
 void create_aresta(Vertice *inicio, Vertice *fim);
 
+
 /**
  * @brief Método para adicionar um novo grafo de derivação
  *
  * @param g Um ponteiro da um tipo Grafo
  * @return Void
  */
-void novo_grafo(Grafo* g);
+void new_grafo(Grafo* g);
+
 
 /**
  * @brief Método para adicionar informação de uma dimensão ou atributo
@@ -114,10 +121,12 @@ void novo_grafo(Grafo* g);
  */
 Info *add_info(Hierarquia *hierarquia, char *nome);
 
+
 /**
- *
+ *	@brief Método para calcular e atribuir as siglas de uma dimensão/atributo
  */
 void calcula_siglas(Grafo *);
+
 
 /**
  * @brief	Método para salvar os dados de um novo grafo.
@@ -125,7 +134,8 @@ void calcula_siglas(Grafo *);
  * @param g O grafo criado com informações de dimensões e atributos.
  * @return Void
  */
-void armazena_dados(Grafo *g);
+void save_data_to_file(Grafo *g);
+
 
 /**
  * @brief Método para ler as informações do arquivo de dados.
@@ -134,22 +144,36 @@ void armazena_dados(Grafo *g);
  * @param rrn A posição do registro no arquivo de dados.
  * @return Void
  */
-void leDados(Grafo *g, int rrn);
+void get_data_from_file(Grafo *g, int rrn);
+
 
 /**
+ * @brief Método para gerar um gravo de derivação para visualização gráfica.
  *
+ * @param grafo O grafo com as informações das hierarquias.
+ * @return Void
  */
-Vertice *pesquisaVertice(Vertice *, char *);
+void generate_graph_for_graphic(Grafo *grafo);
+
 
 /**
+ * [generate_filhos description]
  *
+ * @param vertice [description]
+ * @param grafo   [description]
+ * @return Void
  */
-void generateGraph(Grafo *);
+void generate_filhos(Vertice *vertice, Grafo *grafo) ;
+
 
 /**
+ * [pesquisa_vertice description]
  *
+ * @param  vertice [description]
+ * @param  sigla   [description]
+ * @return Vertice
  */
-void generateFilhos(Vertice *, Grafo *) ;
+Vertice *pesquisa_vertice(Vertice *vertice, char *sigla);
 
 
 /**
@@ -160,6 +184,7 @@ void generateFilhos(Vertice *, Grafo *) ;
  */
 void generate_dot_file(Grafo *grafo);
 
+
 /**
  * @brief Método que escreve todas as dependências do grafo no arquivo '.dot'
  *
@@ -169,6 +194,7 @@ void generate_dot_file(Grafo *grafo);
  */
 void write_all_dependencies(Vertice *vertice, FILE *dot_file) ;
 
+
 /**
  * @brief Método que gera um arquivo '.png' a partir de um arquivo '.dot'
  *
@@ -176,13 +202,13 @@ void write_all_dependencies(Vertice *vertice, FILE *dot_file) ;
  */
 void generate_png_from_dot_file();
 
+
 /**
  * @brief Método para imprimir uma hierarquia (registro)
  *
  * @param grafo O grafo (hierarquia/registro) a ser imprimido
  * @return Void
  */
-void imprimir_hierarquias(Grafo *grafo);
-
+void print_hierarquias(Grafo *grafo);
 
 #endif
