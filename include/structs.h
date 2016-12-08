@@ -123,9 +123,12 @@ Info *add_info(Hierarquia *hierarquia, char *nome);
 
 
 /**
- *	@brief Método para calcular e atribuir as siglas de uma dimensão/atributo
+ * @brief Método para calcular e atribuir as siglas de uma dimensão/atributo
+ *
+ * @param grafo Grafo que será submetido ao cálculo
+ * @return Void
  */
-void calcula_siglas(Grafo *);
+void calcula_siglas(Grafo *grafo);
 
 
 /**
@@ -157,20 +160,20 @@ void generate_graph_for_graphic(Grafo *grafo);
 
 
 /**
- * [generate_filhos description]
+ * @brief Método auxiliar para a função 'generate_graph_for_graphic'
  *
- * @param vertice [description]
- * @param grafo   [description]
+ * @param vertice Vértice ancestral.
+ * @param grafo   O grafo com as informações das hierarquias.
  * @return Void
  */
-void generate_filhos(Vertice *vertice, Grafo *grafo) ;
+void generate_filhos(Vertice *vertice, Grafo *grafo);
 
 
 /**
- * [pesquisa_vertice description]
+ * Método auxiliar para a função 'generate_filhos'
  *
- * @param  vertice [description]
- * @param  sigla   [description]
+ * @param  vertice Vértice ancestral.
+ * @param  sigla   A sigla do vértice.
  * @return Vertice
  */
 Vertice *pesquisa_vertice(Vertice *vertice, char *sigla);
