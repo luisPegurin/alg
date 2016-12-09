@@ -156,27 +156,27 @@ Info *add_info(Hierarquia *hierarquia, char *nome) {
 
 
 /**
- * Define quais são as siglas de cada informação dentro das hierarquias do 
- * grafo passado por parâmetro de acordo com o nome de cada uma. As siglas 
+ * Define quais são as siglas de cada informação dentro das hierarquias do
+ * grafo passado por parâmetro de acordo com o nome de cada uma. As siglas
  * são únicas dentro do grafo. Por padrão a sigla é a primeira letra do nome,
  * mas se existirem nome com a mesma primeira letra, considera-se também a segunda letra
  * e assim sucetivamente.
- * 
+ *
  */
 void calcula_siglas(Grafo *grafo) {
-  int n = grafo->numHier;
-  int i;
-  for (i = 0; i < n; i++) {
+  int i, j, nro_hierarquias = grafo->numHier;
+
+  for (i = 0; i < nro_hierarquias; i++) {
     Info *aux = grafo->hierarquias[i]->topo;
     int Iaux = 0;
 
     while (aux != NULL) {
-
       int pos = 0;
-      int j;
-      for (j = 0; j < n; j++) {
+
+      for (j = 0; j < nro_hierarquias; j++) {
         Info *aux2 = grafo->hierarquias[j]->topo;
         int Iaux2 = 0;
+
         while (aux2 != NULL) {
           if ( (i == j && Iaux2 != Iaux) || i != j ) {
             if ( strcmp(aux2->sigla, "") != 0 ) {
@@ -446,7 +446,7 @@ void generate_filhos(Vertice *vertice, Grafo *grafo) {
  * parametro 'sigla'. Esta função é auxiliar para a função generate_filhos
  * que a usa para não gerar um novo vertice com a sigla igual a de um vertice
  * já existente.
- * 
+ *
  */
 Vertice *pesquisa_vertice(Vertice *vertice, char *sigla) {
   No *aux = vertice->filhos;

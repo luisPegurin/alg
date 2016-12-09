@@ -33,12 +33,19 @@ void menu_principal() {
     switch (menu_opcao) {
       case 1:
         menu_visualizar_grafo();
+        break;
       case 2:
         menu_novo_grafo();
+        break;
       case 3:
         menu_visualizacao_grafica();
+        break;
       case 4:
         menu_sair();
+        break;
+      default:
+        printf("\nOpcao inválida!\n\n");
+        menu_continuar();
     }
   }
 }
@@ -48,9 +55,19 @@ void menu_principal() {
  * menu_principal é invocado.
  */
 void menu_continuar() {
+  int i;
+
   printf("Aperte [ENTER] para continuar\n");
   while( getchar() != '\n' );
   getchar();
+
+  printf("Voltando ao menu principal");
+  for(i = 0; i < 2; i++) {
+    printf(".");
+    fflush(stdout);
+    sleep(1);
+  }
+  printf("\n\n");
 
   menu_principal();
 }

@@ -7,7 +7,7 @@ SRC=./src
 OBJ=./obj
 
 # Opcoes de compilacao
-FLAGS = -std=c11 -Wall
+FLAGS = -std=c11 -Wall -Werror
 
 all: clean structs menu main
 	$(CP) $(OBJ)/structs.o $(OBJ)/menu.o $(OBJ)/main.o -o main
